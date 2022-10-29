@@ -1,5 +1,17 @@
 from flask import Flask, request
-import requests
+import requests, psycopg2
+
+
+
+
+
+
+
+
+
+conn = psycopg2.connect("dbname=pyhon user=postgres password=LKsd25sf35df221")
+cur = conn.cursor()
+
 app = Flask(__name__)
 @app.route('/form-example', methods=['GET', 'POST'])
 def form_example():
@@ -12,6 +24,12 @@ def form_example():
         }
         response = requests.get(url, headers=headers)
         print(response.text)
+
+        cur.execute("""SELECT nft_info from nft WHERE nft_address = %s""", (address,))
+        ans = cur.fetchall()  
+        if ans==[]:
+            cur.execute("INSERT INTO nft (nft_address, nft_info) VALUES (%s, %s)",(address, response.text,))
+
         return '''
                   <h1>The information about nft: {}</h1>'''.format(response.text)
     return '''
@@ -21,3 +39,8 @@ def form_example():
            </form>'''
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+
+
+
+
+    
