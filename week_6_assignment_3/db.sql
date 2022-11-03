@@ -18,10 +18,12 @@ DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE users(
 	user_name text,
+	user_email text,
 	user_password text
 );
 
 SELECT * FROM nft;
+SELECT * FROM users;
 
 /*
 INSERT INTO nft VALUES ('', '');
