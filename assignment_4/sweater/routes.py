@@ -19,7 +19,7 @@ def founder():
     if userOne.loggined:
         return render_template("nft.html")
     else:
-        return redirect(url_for('logto'))
+        return redirect(url_for('auth'))
 
 
 @app.route("/res", methods=['POST', "GET"])
@@ -50,6 +50,15 @@ def result():
 @app.route('/')
 def index():
     return render_template("index.html")
+
+
+@app.route('/logout')
+def logout():
+    if userOne.loggined:
+        userOne.UserLoggedOut()
+        return redirect("/")
+    else:
+        return redirect("/")
 
 
 @app.route('/about')
@@ -109,15 +118,14 @@ def log():
 @app.route('/profile')
 def profile():
     if userOne.loggined:
-
         return render_template('profile.html', namepi=userOne.GetName(), emailpi=userOne.GetEmail())
     else:
-        return redirect('logto')
+        return redirect('auth')
 
 
-@app.route('/logto')
-def logto():
-    return render_template('logto.html')
+@app.route('/auth')
+def auth():
+    return render_template('auth.html')
 
 
 @app.route('/user/<string:name>/<string:password>')
@@ -125,3 +133,7 @@ def user(name, password):
     return "User page: " + name + " - " + password
 
 
+"""
+testosterone
+testo99
+"""
