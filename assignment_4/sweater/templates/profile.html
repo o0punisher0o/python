@@ -5,10 +5,12 @@ Your Profile
 {% endblock %}
 
 {% block body %}
-<div class="d-grid gap-2 d-sm-flex justify-content-sm-center ">
-        <button type="button" class="ln btn btn-outline-secondary btn-lg px-4 gap-3"><a href="../sign">
-            Sign in</a></button>
-        <button type="button" class="btn btn-outline-secondary btn-lg px-4"><a href="../log">
-            Log in</a></button>
-</div>
+    <form action="/profile" method="post">
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <img src = "../static/img/profile_img.jpg">
+                <h2>User name: {{namepi}}</h2>
+                <h2>User email: {{emailpi}}</h2>
+            <button type="submit" id="logout_button">Logout</button>
+        </div>
+    </form>
 {% endblock %}

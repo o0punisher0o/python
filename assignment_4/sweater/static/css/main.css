@@ -52,3 +52,17 @@ body {
     color: white;
     text-decoration: none;
 }
+
+#logout_button{
+    position: absolute;
+    right: 0;
+    top: 73px;
+    height: 60px;
+    width: 120px;
+    border: none;
+}
+
+/*
+testosterone
+testo99
+*/

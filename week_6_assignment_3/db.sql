@@ -25,6 +25,8 @@ CREATE TABLE users(
 SELECT * FROM nft;
 SELECT * FROM users;
 
+SELECT * FROM users WHERE user_name = 'user' AND user_password = 'user'
+
 /*
 INSERT INTO nft VALUES ('', '');
 */

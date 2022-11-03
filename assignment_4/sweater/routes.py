@@ -1,12 +1,25 @@
 import requests, psycopg2
-from flask import Flask, render_template, url_for, request
-
+from flask import Flask, render_template, url_for, request, redirect
 from sweater import conn, cur, app
 
+from flask_bootstrap import Bootstrap
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField
+from wtforms.validators import InputRequired, Email, Length
+from .models import User
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
-@app.route('/nft')
-def nft():
-    return render_template('nft.html')
+
+userOne = User(False, 'username', 'email', '')
+
+
+@app.route("/founder")
+def founder():
+    if userOne.loggined:
+        return render_template("nft.html")
+    else:
+        return redirect(url_for('logto'))
 
 
 @app.route("/res", methods=['POST', "GET"])
@@ -55,24 +68,56 @@ def sign_res():
     name = output["namereg"]
     email = output["emailreg"]
     password = output["passreg"]
+    #hash_password = generate_password_hash(password, method='sha256')   hash_password
+    userOne.SetPass(password)
+    h_password1 = userOne.h_password
     cur.execute("""SELECT * from users WHERE user_name = %s""", (name,))
     answer1 = cur.fetchall()
     if answer1!=[]:
         return render_template("sign_res.html", answer381="User with this name is already registered")
     else:
-        cur.execute("""INSERT INTO users (user_name, user_email, user_password) VALUES (%s, %s, %s);""", (name, email, password))
+        cur.execute("""INSERT INTO users (user_name, user_email, user_password) VALUES (%s, %s, %s);""", (name, email, h_password1))
         conn.commit()
         return render_template('sign_res.html', answer381="registration completed successfully")
 
 
-@app.route('/log')
+@app.route('/log', methods=['POST', "GET"])
 def log():
+    if request.method == 'POST':
+        output = request.form.to_dict()
+        name = output["namelog"]
+        password = output["passlog"]
+        #hash_password = generate_password_hash(password, method='sha256')
+        cur.execute("""SELECT user_email FROM users WHERE user_name = %s""", (name,))
+        answer17 = cur.fetchall()
+        if answer17 != []:
+            cur.execute("""SELECT user_password FROM users WHERE user_name = %s""", (name,))
+            answer16 = cur.fetchall()
+            if userOne.VerifyPass(answer16[0][0], password):
+                userOne.SetUsername(name)
+                userOne.SetEmail(email=answer17[0][0])
+                # return render_template("log_in.html", answer391="login succesfull")
+                userOne.UserLoggedIn()
+                return redirect(url_for('profile'), 301)
+            else:
+                return render_template('log_in.html', answer391="Incorrect username or password entered")
+        else:
+            return render_template('log_in.html', answer391="Incorrect username or password entered")
     return render_template("log_in.html")
 
 
 @app.route('/profile')
-def prof():
-    return render_template("profile.html")
+def profile():
+    if userOne.loggined:
+
+        return render_template('profile.html', namepi=userOne.GetName(), emailpi=userOne.GetEmail())
+    else:
+        return redirect('logto')
+
+
+@app.route('/logto')
+def logto():
+    return render_template('logto.html')
 
 
 @app.route('/user/<string:name>/<string:password>')

@@ -6,19 +6,20 @@ Sign in
 
 {% block body %}
     <main class="form-signin w-100 m-auto">
-  <form>
+  <form action="/log" method="post">
       <div class="img_center"><img class="mb-4" src="../static/img/nft.jpg" alt="" width="400" height="400">
-          <h1 class="h3 mb-3 fw-normal">Please log in</h1></div>
+          <h1 class="h3 mb-3 fw-normal">Please log in</h1>
+          <h1 class="h3 mb-3 fw-normal">{{answer391}}</h1></div>
 
 
       <div class="signin_form_container">
           <div class="signin_form">
               <div class="form-floating">
-                  <input type="name" class="form-control border_radius_top" id="floatingInput" placeholder="name">
+                  <input type="name" name="namelog" class="form-control border_radius_top" id="floatingInput" placeholder="name">
                   <label for="floatingInput">User name</label>
               </div>
               <div class="form-floating">
-                  <input type="password" class="form-control no_border_top border_radius_bottom" id="floatingPassword"
+                  <input type="password" name="passlog" class="form-control no_border_top border_radius_bottom" id="floatingPassword"
                          placeholder="Password">
                   <label for="floatingPassword">Password</label>
               </div>
