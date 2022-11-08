@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 
 
 app = Flask(__name__)
-conn = psycopg2.connect("dbname=pyhon user=postgres password=LKsd25sf35df221")
+conn = psycopg2.connect("dbname=pyhon user=postgres password=6679")
 cur = conn.cursor()
 
 
